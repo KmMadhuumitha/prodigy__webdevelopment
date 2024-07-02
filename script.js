@@ -1,66 +1,32 @@
-let currentPlayer = "X";
-let gameState = [["", "", ""], ["", "", ""], ["", "", ""]];
-
-function makeMove(row, col) {
-  if (gameState[row][col] === "") {
-    gameState[row][col] = currentPlayer;
-    document.getElementById("board").children[row].children[col].innerText = currentPlayer;
-    if (checkWin(currentPlayer)) {
-      alert(currentPlayer + " wins!");
-      resetBoard();
-    } else {
-      currentPlayer = currentPlayer === "X" ? "O" : "X";
-    }
+function getWeather() {
+    var locationInput = document.getElementById("location");
+    var weatherInfo = document.getElementById("weather-info");
+  
+    weatherInfo.innerHTML = "";
+  
+  
+    var location = locationInput.value;
+    var apiKey = "YOUR_API_KEY"; // Replace with your own API key
+    var url = "https://api.weatherapi.com/v1/current.json?key=" + apiKey + "&q=" + location;
+  
+    fetch(url)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(data) {
+        var weather = data.current;
+        var temperature = weather.temp_c;
+        var condition = weather.condition.text;
+        var windSpeed = weather.wind_kph;
+  
+     
+        var weatherHtml = "<p>Temperature: " + temperature + "°C</p>";
+        weatherHtml += "<p>Condition: " + condition + "</p>";
+        weatherHtml += "<p>Wind Speed: " + windSpeed + " km/h</p>";
+  
+        weatherInfo.innerHTML = weatherHtml;
+      })
+      .catch(function(error) {
+        console.log("Error fetching weather data:", error);
+      });
   }
-}
-
-function checkWin(player) {
-  // Check rows
-  for (let i = 0; i < 3; i++) {
-    if (
-      gameState[i][0] === player &&
-      gameState[i][1] === player &&
-      gameState[i][2] === player
-    ) {
-      return true;
-    }
-  }
-
-  // Check columns
-  for (let i = 0; i < 3; i++) {
-    if (
-      gameState[0][i] === player &&
-      gameState[1][i] === player &&
-      gameState[2][i] === player
-    ) {
-      return true;
-    }
-  }
-
-  // Check diagonals
-  if (
-    gameState[0][0] === player &&
-    gameState[1][1] === player &&
-    gameState[2][2] === player
-  ) {
-    return true;
-  }
-  if (
-    gameState[0][2] === player &&
-    gameState[1][1] === player &&
-    gameState[2][0] === player
-  ) {
-    return true;
-  }
-
-  return false;
-}
-
-function resetBoard() {
-  currentPlayer = "X";
-  gameState = [["", "", ""], ["", "", ""], ["", "", ""]];
-  let cells = document.getElementsByClassName("cell");
-  for (let i = 0; i < cells.length; i++) {
-    cells[i].innerText = "";
-  }
-}
