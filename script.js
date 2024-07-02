@@ -1,61 +1,66 @@
-var hours = 0;
-var minutes = 0;
-var seconds = 0;
-var milliseconds = 0;
-var stopwatchInterval;
+let currentPlayer = "X";
+let gameState = [["", "", ""], ["", "", ""], ["", "", ""]];
 
-function start() {
-  stopwatchInterval = setInterval(updateStopwatch, 10);
+function makeMove(row, col) {
+  if (gameState[row][col] === "") {
+    gameState[row][col] = currentPlayer;
+    document.getElementById("board").children[row].children[col].innerText = currentPlayer;
+    if (checkWin(currentPlayer)) {
+      alert(currentPlayer + " wins!");
+      resetBoard();
+    } else {
+      currentPlayer = currentPlayer === "X" ? "O" : "X";
+    }
+  }
 }
 
-function updateStopwatch() {
-  milliseconds += 10;
-
-  if (milliseconds >= 1000) {
-    seconds++;
-    milliseconds = 0;
+function checkWin(player) {
+  // Check rows
+  for (let i = 0; i < 3; i++) {
+    if (
+      gameState[i][0] === player &&
+      gameState[i][1] === player &&
+      gameState[i][2] === player
+    ) {
+      return true;
+    }
   }
 
-  if (seconds >= 60) {
-    minutes++;
-    seconds = 0;
+  // Check columns
+  for (let i = 0; i < 3; i++) {
+    if (
+      gameState[0][i] === player &&
+      gameState[1][i] === player &&
+      gameState[2][i] === player
+    ) {
+      return true;
+    }
   }
 
-  if (minutes >= 60) {
-    hours++;
-    minutes = 0;
+  // Check diagonals
+  if (
+    gameState[0][0] === player &&
+    gameState[1][1] === player &&
+    gameState[2][2] === player
+  ) {
+    return true;
+  }
+  if (
+    gameState[0][2] === player &&
+    gameState[1][1] === player &&
+    gameState[2][0] === player
+  ) {
+    return true;
   }
 
-  document.getElementById("hours").innerText = padWithZero(hours);
-  document.getElementById("minutes").innerText = padWithZero(minutes);
-  document.getElementById("seconds").innerText = padWithZero(seconds);
-  document.getElementById("milliseconds").innerText = padWithZero(milliseconds);
+  return false;
 }
 
-function pause() {
-  clearInterval(stopwatchInterval);
-}
-
-function reset() {
-  clearInterval(stopwatchInterval);
-  hours = 0;
-  minutes = 0;
-  seconds = 0;
-  milliseconds = 0;
-  document.getElementById("hours").innerText = "00";
-  document.getElementById("minutes").innerText = "00";
-  document.getElementById("seconds").innerText = "00";
-  document.getElementById("milliseconds").innerText = "000";
-  document.getElementById("lap-list").innerHTML = "";
-}
-
-function lap() {
-  var lapTime = padWithZero(hours) + ":" + padWithZero(minutes) + ":" + padWithZero(seconds) + ":" + padWithZero(milliseconds);
-  var lapItem = document.createElement("li");
-  lapItem.innerText = lapTime;
-  document.getElementById("lap-list").appendChild(lapItem);
-}
-
-function padWithZero(number) {
-  return number.toString().padStart(2, "0");
+function resetBoard() {
+  currentPlayer = "X";
+  gameState = [["", "", ""], ["", "", ""], ["", "", ""]];
+  let cells = document.getElementsByClassName("cell");
+  for (let i = 0; i < cells.length; i++) {
+    cells[i].innerText = "";
+  }
 }
