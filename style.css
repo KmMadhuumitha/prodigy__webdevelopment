@@ -1,32 +1,37 @@
-#navigation {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: transparent;
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f2f2f2;
   }
   
-  #navigation ul {
-    list-style: none;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background-color: #13093f;
-    height: 50px;
-    padding: 0;
-    margin: 0;
+  h1 {
+    margin-top: 20px;
   }
   
-  #navigation ul li {
-    margin: 0 10px;
+  #stopwatch-container {
+    margin-top: 50px;
+    font-size: 32px;
   }
   
-  #navigation ul li a {
-    text-decoration: none;
-    color: #eee7e6;
-    font-weight: bold;
+  #buttons-container {
+    margin-top: 20px;
   }
   
-  #navigation ul li a:hover {
-    color: #38af91;
+  button {
+    margin: 5px;
+    padding: 8px 16px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  #laps-container {
+    margin-top: 50px;
+  }
+  
+  #lap-list {
+    list-style-type: decimal;
+    padding-left: 20px;
   }
